@@ -43,6 +43,16 @@ def StringSplitList(x,y):
     return(string)
 
 
+def StringifyList(x):
+    nstr = ""
+    for i in x:
+        try:
+            nstr = nstr+str(x[i])
+        except:
+            pass
+    return(nstr)
+
+
 def getDate():
     year = time.strftime("%Y")
     day = time.strftime("%d")
@@ -136,6 +146,116 @@ def add():
         add()
 
 
+def editUser():
+        clear()
+        if len(ANM) <= 0:
+            print("Theres no data!")
+            input()
+            menu("start")
+        else:
+            print("-"*20)
+            for i in range(0,len(ANM)):
+                print("["+str(i+1)+"]: "+ANM[i][0])
+            print("-"*20)
+            input()
+def editEntry():
+        clear()
+        if len(ANM) <= 0:
+            print("Theres no data!")
+            input()
+            menu("start")
+        else:
+            SelectedUser = 0
+            SelectedEntry = 0
+            for i in range(0,len(ANM)):
+                print("["+str(i+1)+"]: "+ANM[i][0])
+            choice = input(":> ")
+            try:
+                choice = int(choice)
+            except:
+                editEntry()
+            SelectedUser = choice-1
+            selection = ANM[choice-1]
+            for i in range(1,len(selection)):
+                print("["+str((i))+"]:      "+str(selection[i]))
+            choice = input(":> ")
+            try:
+                choice = int(choice)
+            except:
+                editEntry()
+            SelectedEntry = choice
+            selection = selection[choice]
+            clear()
+            b0ck = "Selection:      "
+            print("-"*(len(b0ck)+len(str(selection))))
+            print(b0ck+str(selection))
+            print("-"*(len(b0ck)+len(str(selection))))
+            print("[1]: Value #1")
+            print("[2]: Value #2")
+            print("[3]: Date")
+            choice = input(":> ")
+            try:
+                choice = int(choice)
+            except:
+                editEntry()
+            if choice == 1:
+                newValue = input("Enter A New Value: ")
+                try:
+                    newValue = int(newValue)
+                except:
+                    editEntry()
+                ANM[SelectedUser][SelectedEntry][0] = newValue
+                input("Finished, Press any key to continue.")
+                editEntry()
+            elif choice == 2:
+                newValue = input("Enter A New Value: ")
+                try:
+                    newValue = int(newValue)
+                except:
+                    editEntry()
+                ANM[SelectedUser][SelectedEntry][1] = newValue
+                input("Finished, Press any key to continue.")
+                editEntry()
+            elif choice == 3:
+                newValueOne = input("Enter A Day: ")
+                newValueTwo = input("Enter A Month: ")
+                newValueThree = input("Enter A Year: ")
+                try:
+                    newValueOne = int(newValueOne)
+                    newValueTwo = int(newValueTwo)
+                    newValueThree = int(newValueThree)
+                except:
+                    editEntry()
+
+                ANM[SelectedUser][SelectedEntry][2] = StringSplitList([newValueThree,newValueTwo,newValueOne],"/")
+            save()
+            input("Finished, Press any key to continue.")
+            editEntry()
+def edit():
+    clear()
+    print("-"*20)
+    print("[1]: Edit User")
+    print("[2]: Edit Entry")
+    print("[3]: Return")
+    print("-"*20)
+    choice = input(">: ")
+    try:
+        choice = int(choice)
+    except:
+        menu("start")
+    if choice == 1:
+        clear()
+    elif choice == 2:
+        editEntry()
+    elif choice == 3:
+        menu("start")
+    else:
+        edit()
+
+
+
+
+
 def plural(x):
     if x == 1 or x == -1:
         return("")
@@ -168,7 +288,6 @@ def stats():
             if numbers.count(int(pack[y])) > top:
                 top = int(pack[y])
                 topCount = numbers.count(int(pack[y]))
-
         print(pog[0])
         print("             Most Frequent Number: ["+ str(top) + "] Occurences: [" + str(topCount)+"]")
     print("/"*40)
@@ -202,7 +321,6 @@ def stats():
 
 
 
-
 def menu(x):
     load()
     global ANM
@@ -211,7 +329,7 @@ def menu(x):
         print("-"*20)
         print("[1]: View")
         print("[2]: Add")
-        print("[3]: Remove")
+        print("[3]: Edit/Remove")
         print("[4]: Stats")
         print("-"*20)
         choice = input("[]:> ")
@@ -224,7 +342,7 @@ def menu(x):
         elif choice == 2:
             add()
         elif choice == 3:
-            pass
+            edit()
         elif choice == 4:
             stats()
         else:
