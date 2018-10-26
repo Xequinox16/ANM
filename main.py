@@ -147,6 +147,7 @@ def add():
 
 
 def editUser():
+        load()
         clear()
         if len(ANM) <= 0:
             print("Theres no data!")
@@ -154,11 +155,50 @@ def editUser():
             menu("start")
         else:
             print("-"*20)
+            SelectedUser = 0
             for i in range(0,len(ANM)):
                 print("["+str(i+1)+"]: "+ANM[i][0])
             print("-"*20)
+            choice = input(":> ")
+            try:
+                choice = int(choice)
+            except:
+                editUser()
+            SelectedUser = choice
+            print("[1]: Delete")
+            print("[2]: Rename")
+            selection = ANM[SelectedUser-1][0]
+            b0ck = "Selection:      "
+            print("-"*(len(b0ck)+len(str(selection))))
+            print(b0ck+str(selection))
+            print("-"*(len(b0ck)+len(str(selection))))
+            choice = input(":> ")
+            try:
+                choice = int(choice)
+            except:
+                editUser()
+            if choice == 1:
+                clear()
+                print("Are you sure you want to delete ["+str(ANM[choice-1][0])+"]?, this will delete of this user's entries.")
+                choice = input("[Y/N]: ")
+                choice = choice.lower()
+                if choice == "y":
+                    del ANM[SelectedUser-1]
+                else:
+                    editUser()
+            elif choice == 2:
+                clear()
+                print("Enter a new name.")
+                newValue = input(">: ")
+                ANM[SelectedUser-1][0] = newValue
+            else:
+                editUser()
+            save()
+            print("Finished, enter any key to continue.")
             input()
+            editUser()
 def editEntry():
+        load()
         clear()
         if len(ANM) <= 0:
             print("Theres no data!")
@@ -193,6 +233,7 @@ def editEntry():
             print("[1]: Value #1")
             print("[2]: Value #2")
             print("[3]: Date")
+            print("[4]: Delete")
             choice = input(":> ")
             try:
                 choice = int(choice)
@@ -226,6 +267,10 @@ def editEntry():
                     newValueThree = int(newValueThree)
                 except:
                     editEntry()
+            elif choice == 4:
+                del ANM[SelectedUser][SelectedEntry]
+            else:
+                editEntry()
 
                 ANM[SelectedUser][SelectedEntry][2] = StringSplitList([newValueThree,newValueTwo,newValueOne],"/")
             save()
@@ -244,7 +289,7 @@ def edit():
     except:
         menu("start")
     if choice == 1:
-        clear()
+        editUser()
     elif choice == 2:
         editEntry()
     elif choice == 3:
